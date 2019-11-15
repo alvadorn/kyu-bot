@@ -18,3 +18,9 @@ func TestNewSlotOwnerInvalid(t *testing.T) {
 	assert.Nil(t, owner)
 	assert.NotNil(t, err)
 }
+
+func TestSlotOwnerOwnerName(t *testing.T) {
+	owner, _ := NewSlotOwner("Owner")
+
+	assert.Equal(t, owner.OwnerName(), "Owner")
+}

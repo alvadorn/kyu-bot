@@ -6,14 +6,14 @@ import (
 )
 
 func TestDequeueReturnsNilIfQueueIsEmpty(t *testing.T) {
-	q := &Queue{}
+	q := NewQueue()
 	value := q.Dequeue()
 
 	assert.Nil(t, value)
 }
 
 func TestQueueWorksLikeFIFO(t *testing.T) {
-	q := &Queue{}
+	q := NewQueue()
 	q.Enqueue(1)
 	q.Enqueue(2)
 
@@ -22,7 +22,7 @@ func TestQueueWorksLikeFIFO(t *testing.T) {
 }
 
 func TestQueueSize(t *testing.T) {
-	q := &Queue{}
+	q := NewQueue()
 
 	assert.Zero(t, q.Size())
 
@@ -32,7 +32,7 @@ func TestQueueSize(t *testing.T) {
 }
 
 func TestQueueClear(t *testing.T) {
-	q := &Queue{}
+	q := NewQueue()
 
 	q.Enqueue(1)
 	assert.Equal(t, q.Size(), 1)
@@ -40,3 +40,5 @@ func TestQueueClear(t *testing.T) {
 	q.Clear()
 	assert.Zero(t, q.Size())
 }
+
+
