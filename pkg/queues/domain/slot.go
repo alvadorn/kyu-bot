@@ -6,11 +6,11 @@ import (
 )
 
 type Slot struct {
-	name string
-	placement interface{}
+	name  string
+	owner *SlotOwner
 }
 
-func NewSlot(name string, placement interface{}) (*Slot, error) {
+func NewSlot(name string, owner *SlotOwner) (*Slot, error) {
 	trimmedName := strings.TrimSpace(name)
 
 	if len(trimmedName) == 0 {
@@ -19,14 +19,31 @@ func NewSlot(name string, placement interface{}) (*Slot, error) {
 
 	return &Slot{
 		trimmedName,
-		placement,
+		owner,
 	}, nil
 }
 
-func (slot *Slot) Equals(otherSlot *Slot) bool {
+func (slot Slot) Equals(otherSlot *Slot) bool {
 	return slot.name == otherSlot.Name()
 }
 
-func (slot *Slot) Name() string {
+func (slot Slot) Name() string {
 	return slot.name
+}
+
+func (slot Slot) IsEmpty() bool {
+	return slot.owner == nil
+}
+
+func (slot *Slot) ReleaseOwner() {
+	slot.owner = nil
+}
+
+func (slot *Slot) NewOwner(owner *SlotOwner) error {
+	if slot.owner == nil {
+		slot.owner = owner
+		return nil
+	}
+
+	return errors.New("Already has an owner, wait until the owner release its position")
 }
