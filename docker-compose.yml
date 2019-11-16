@@ -19,7 +19,9 @@ services:
     hostname: redis
     volumes:
       - redis-data:/data
-    container_name: redisintgo
+    container_name: redis
+    ports:
+      - 6379:6379
 
   test:
     <<: *base
