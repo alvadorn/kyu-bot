@@ -11,6 +11,6 @@ type QueueRepository interface {
 }
 
 type SlotRepository interface {
-	saveSlots(slackId string, channelId string, slots []*Slot)
-	restoreQueue(slackId string, channelId string) []*Slot
+	SaveSlots(slackId string, channelId string, slots []*Slot)
+	RestoreSlots(slackId string, channelId string) []*Slot
 }
