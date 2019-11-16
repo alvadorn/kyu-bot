@@ -6,8 +6,8 @@ type SlottedQueueRepository interface {
 }
 
 type QueueRepository interface {
-	saveQueue(slackId string, channelId string, queue *Queue)
-	restoreQueue(slackId string, channelId string) *Queue
+	SaveQueue(slackId string, channelId string, queue *Queue)
+	RestoreQueue(slackId string, channelId string) *Queue
 }
 
 type SlotRepository interface {
