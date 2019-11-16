@@ -40,5 +40,3 @@ func TestQueueClear(t *testing.T) {
 	q.Clear()
 	assert.Zero(t, q.Size())
 }
-
-

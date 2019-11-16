@@ -13,7 +13,7 @@ func (queue *Queue) Enqueue(element interface{}) {
 }
 
 func (queue *Queue) Dequeue() interface{} {
-	if (len(queue.data) > 0) {
+	if len(queue.data) > 0 {
 		element := queue.data[0]
 		queue.data = queue.data[1:]
 		return element
