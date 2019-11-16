@@ -1,7 +1,7 @@
 package queue
 
 import (
-	"github.com/alvadorn/kyu_bot/pkg/queues/domain"
+	"github.com/alvadorn/kyu_bot/pkg/queue/domain"
 	"strings"
 )
 
