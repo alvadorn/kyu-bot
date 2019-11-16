@@ -1,0 +1,28 @@
+version: '3.7'
+
+volumes:
+  redis-data:
+    driver: local
+
+services:
+  base: &base
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    volumes:
+      - .:/home/app
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:5-alpine
+    hostname: redis
+    volumes:
+      - redis-data:/data
+    container_name: redisintgo
+
+  test:
+    <<: *base
+    command: go test
+
+
