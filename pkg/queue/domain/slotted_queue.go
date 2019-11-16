@@ -1,6 +1,9 @@
 package domain
 
-import "errors"
+import (
+	"errors"
+	"github.com/google/uuid"
+)
 
 type SlottedQueue struct {
 	slots  []*Slot
@@ -21,7 +24,7 @@ func NewSlottedQueue(queue *Queue, slots []*Slot, singleSlot bool) *SlottedQueue
 
 	if len(slots) == 0 {
 		if singleSlot {
-			slot, _ := NewSlot(singleSlotKey, nil)
+			slot, _ := NewSlot(uuid.New(), singleSlotKey, nil)
 
 			slottedQueue.slots = append(slottedQueue.slots, slot)
 		}
@@ -39,7 +42,7 @@ func (slottedQueue *SlottedQueue) AddNewSlot(newSlot *Slot) error {
 		return errors.New("It is not possible to add a slottedQueue on a single slottedQueue queue")
 	}
 
-	if !slottedQueue.isSlotUnique(newSlot) {
+	if !slottedQueue.isSlotNamedUnique(newSlot) {
 		return errors.New("Already exists a slot with this name")
 	}
 
@@ -48,30 +51,26 @@ func (slottedQueue *SlottedQueue) AddNewSlot(newSlot *Slot) error {
 	return nil
 }
 
-func (sq *SlottedQueue) isSlotUnique(comparingSlot *Slot) bool {
+func (sq *SlottedQueue) isSlotNamedUnique(comparingSlot *Slot) bool {
 	unique := true
 
 	for _, slot := range sq.slots {
-		unique = unique && !slot.Equals(comparingSlot)
+		unique = unique && slot.Name() != comparingSlot.Name()
 	}
 
 	return unique
 }
 
-func (sq *SlottedQueue) RemoveSlotByName(name string) error {
+func (sq *SlottedQueue) RemoveSlotByID(id string) error {
 	if sq.single {
 		return errors.New("Can't remove slot for a single slot queue")
 	}
 
-	slotToBeFound, err := NewSlot(name, nil)
-
 	indexFound := -1
 
-	if err == nil {
-		for index, slot := range sq.slots {
-			if slot.Equals(slotToBeFound) {
-				indexFound = index
-			}
+	for index, slot := range sq.slots {
+		if slot.ID() == id {
+			indexFound = index
 		}
 	}
 

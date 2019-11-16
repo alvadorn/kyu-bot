@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -8,19 +9,19 @@ import (
 func TestSlottedQueueAddNewSlot(t *testing.T) {
 	sq := NewSlottedQueue(nil, nil, false)
 
-	slot, _ := NewSlot("A", nil)
+	slot, _ := NewSlot(uuid.New(), "A", nil)
 
 	err := sq.AddNewSlot(slot)
 
 	assert.Nil(t, err)
 }
 
-func TestSlottedQueueAddSlotRepeateadlyWillFail(t *testing.T) {
-	slot, _ := NewSlot("A", nil)
+func TestSlottedQueueAddSlotRepeatablyWillFail(t *testing.T) {
+	slot, _ := NewSlot(uuid.New(), "A", nil)
 	slots := []*Slot{slot}
 	sq := NewSlottedQueue(nil, slots, false)
 
-	repeatedSlot, _ := NewSlot("A", nil)
+	repeatedSlot, _ := NewSlot(uuid.New(), "A", nil)
 
 	err := sq.AddNewSlot(repeatedSlot)
 
@@ -30,7 +31,7 @@ func TestSlottedQueueAddSlotRepeateadlyWillFail(t *testing.T) {
 func TestSlottedQueueAddSlotOnSingleWillFail(t *testing.T) {
 	sq := NewSlottedQueue(nil, nil, true)
 
-	repeatedSlot, _ := NewSlot("A", nil)
+	repeatedSlot, _ := NewSlot(uuid.New(), "A", nil)
 
 	err := sq.AddNewSlot(repeatedSlot)
 
@@ -40,25 +41,30 @@ func TestSlottedQueueAddSlotOnSingleWillFail(t *testing.T) {
 func TestSlottedQueueRemoveSlotWillFailWhenNotFound(t *testing.T) {
 	sq := NewSlottedQueue(nil, nil, false)
 
-	err := sq.RemoveSlotByName("A")
+	err := sq.RemoveSlotByID(uuid.New().String())
 
 	assert.NotNil(t, err)
 }
 
 func TestSlottedQueueRemoveSlot(t *testing.T) {
-	slot, _ := NewSlot("A", nil)
+	uuidv4 := uuid.New()
+	slot, _ := NewSlot(uuidv4, "A", nil)
 	slots := []*Slot{slot}
 	sq := NewSlottedQueue(nil, slots, false)
 
-	err := sq.RemoveSlotByName("A")
+	err := sq.RemoveSlotByID(uuidv4.String())
 
 	assert.Nil(t, err)
 }
 
 func TestSlottedQueueRemoveSlotFailForSingle(t *testing.T) {
-	sq := NewSlottedQueue(nil, nil, true)
+	uuidv4 := uuid.New()
+	slot, _ := NewSlot(uuidv4, "A", nil)
+	slots := []*Slot{slot}
 
-	err := sq.RemoveSlotByName("A")
+	sq := NewSlottedQueue(nil, slots, true)
+
+	err := sq.RemoveSlotByID(uuidv4.String())
 
 	assert.NotNil(t, err)
 }

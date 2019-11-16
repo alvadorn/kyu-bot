@@ -2,15 +2,17 @@ package domain
 
 import (
 	"errors"
+	"github.com/google/uuid"
 	"strings"
 )
 
 type Slot struct {
+	id    uuid.UUID
 	name  string
 	owner *SlotOwner
 }
 
-func NewSlot(name string, owner *SlotOwner) (*Slot, error) {
+func NewSlot(id uuid.UUID, name string, owner *SlotOwner) (*Slot, error) {
 	trimmedName := strings.TrimSpace(name)
 
 	if len(trimmedName) == 0 {
@@ -18,13 +20,18 @@ func NewSlot(name string, owner *SlotOwner) (*Slot, error) {
 	}
 
 	return &Slot{
+		id,
 		trimmedName,
 		owner,
 	}, nil
 }
 
 func (slot Slot) Equals(otherSlot *Slot) bool {
-	return slot.name == otherSlot.Name()
+	return slot.name == otherSlot.Name() && slot.ID() == otherSlot.ID()
+}
+
+func (slot Slot) ID() string {
+	return slot.id.String()
 }
 
 func (slot Slot) Name() string {
@@ -46,4 +53,12 @@ func (slot *Slot) NewOwner(owner *SlotOwner) error {
 	}
 
 	return errors.New("Already has an owner, wait until the owner release its position")
+}
+
+func (slot Slot) CurrentOwner() string {
+	if slot.owner == nil {
+		return ""
+	}
+
+	return slot.owner.OwnerName()
 }
