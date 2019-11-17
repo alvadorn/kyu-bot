@@ -21,6 +21,8 @@ func (suite *RepositorySuite) SetupSuite() {
 	suite.client = redis.NewClient(&redis.Options{
 		Addr: os.Getenv("REDIS_HOST"),
 	})
+
+	suite.client.FlushAll()
 }
 
 func (suite *RepositorySuite) SetupTest() {
