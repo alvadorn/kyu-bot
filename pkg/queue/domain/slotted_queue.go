@@ -5,33 +5,33 @@ import (
 	"github.com/google/uuid"
 )
 
-type SlottedQueue struct {
+type SlottedQueueOptions struct {
 	slots  []*Slot
-	queue  *Queue
 	single bool
+	queue  *Queue
 }
 
-func NewSlottedQueue(queue *Queue, slots []*Slot, singleSlot bool) *SlottedQueue {
+type SlottedQueue struct {
+	SlottedQueueOptions
+	SlackID   string
+	ChannelID string
+}
+
+func NewSlottedQueue(slackID, channelID string, options SlottedQueueOptions) *SlottedQueue {
+	options.setDefault()
+
 	slottedQueue := &SlottedQueue{
-		slots,
-		queue,
-		singleSlot,
+		options,
+		slackID,
+		channelID,
 	}
 
-	if slots == nil {
-		slottedQueue.slots = []*Slot{}
-	}
-
-	if len(slots) == 0 {
-		if singleSlot {
+	if len(slottedQueue.slots) == 0 {
+		if slottedQueue.single {
 			slot, _ := NewSlot(uuid.New(), singleSlotKey, nil)
 
 			slottedQueue.slots = append(slottedQueue.slots, slot)
 		}
-	}
-
-	if queue == nil {
-		slottedQueue.queue = NewQueue()
 	}
 
 	return slottedQueue
@@ -80,4 +80,14 @@ func (sq *SlottedQueue) RemoveSlotByID(id string) error {
 	}
 
 	return errors.New("Slot not found")
+}
+
+func (options *SlottedQueueOptions) setDefault() {
+	if options.slots == nil {
+		options.slots = []*Slot{}
+	}
+
+	if options.queue == nil {
+		options.queue = NewQueue()
+	}
 }

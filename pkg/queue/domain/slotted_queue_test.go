@@ -7,7 +7,7 @@ import (
 )
 
 func TestSlottedQueueAddNewSlot(t *testing.T) {
-	sq := NewSlottedQueue(nil, nil, false)
+	sq := NewSlottedQueue("1", "2", SlottedQueueOptions{single: false})
 
 	slot, _ := NewSlot(uuid.New(), "A", nil)
 
@@ -19,7 +19,7 @@ func TestSlottedQueueAddNewSlot(t *testing.T) {
 func TestSlottedQueueAddSlotRepeatablyWillFail(t *testing.T) {
 	slot, _ := NewSlot(uuid.New(), "A", nil)
 	slots := []*Slot{slot}
-	sq := NewSlottedQueue(nil, slots, false)
+	sq := NewSlottedQueue("1", "2", SlottedQueueOptions{slots: slots, single: false})
 
 	repeatedSlot, _ := NewSlot(uuid.New(), "A", nil)
 
@@ -29,7 +29,7 @@ func TestSlottedQueueAddSlotRepeatablyWillFail(t *testing.T) {
 }
 
 func TestSlottedQueueAddSlotOnSingleWillFail(t *testing.T) {
-	sq := NewSlottedQueue(nil, nil, true)
+	sq := NewSlottedQueue("1", "2", SlottedQueueOptions{single: true})
 
 	repeatedSlot, _ := NewSlot(uuid.New(), "A", nil)
 
@@ -39,7 +39,7 @@ func TestSlottedQueueAddSlotOnSingleWillFail(t *testing.T) {
 }
 
 func TestSlottedQueueRemoveSlotWillFailWhenNotFound(t *testing.T) {
-	sq := NewSlottedQueue(nil, nil, false)
+	sq := NewSlottedQueue("1", "2", SlottedQueueOptions{single: false})
 
 	err := sq.RemoveSlotByID(uuid.New().String())
 
@@ -50,7 +50,7 @@ func TestSlottedQueueRemoveSlot(t *testing.T) {
 	uuidv4 := uuid.New()
 	slot, _ := NewSlot(uuidv4, "A", nil)
 	slots := []*Slot{slot}
-	sq := NewSlottedQueue(nil, slots, false)
+	sq := NewSlottedQueue("1", "2", SlottedQueueOptions{slots: slots, single: false})
 
 	err := sq.RemoveSlotByID(uuidv4.String())
 
@@ -62,7 +62,7 @@ func TestSlottedQueueRemoveSlotFailForSingle(t *testing.T) {
 	slot, _ := NewSlot(uuidv4, "A", nil)
 	slots := []*Slot{slot}
 
-	sq := NewSlottedQueue(nil, slots, true)
+	sq := NewSlottedQueue("1", "2", SlottedQueueOptions{slots: slots, single: true})
 
 	err := sq.RemoveSlotByID(uuidv4.String())
 
