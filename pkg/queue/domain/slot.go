@@ -62,4 +62,3 @@ func (slot Slot) CurrentOwner() string {
 
 	return slot.owner.OwnerName()
 }
-

@@ -68,8 +68,8 @@ func (suite *RepositorySuite) TestRestorePreviousSavedSlots() {
 	key := keySlot("slackId", "channelId", slot)
 
 	sr.dbClient.HMSet(key, map[string]interface{}{
-		ID: uuidv4.String(),
-		name: slot.Name(),
+		ID:    uuidv4.String(),
+		name:  slot.Name(),
 		owner: "",
 	})
 
@@ -85,5 +85,3 @@ func (suite *RepositorySuite) TestRestorePreviousSavedSlots() {
 func TestRunSuite(t *testing.T) {
 	suite.Run(t, new(RepositorySuite))
 }
-
-

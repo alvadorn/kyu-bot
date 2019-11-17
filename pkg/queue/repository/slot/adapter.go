@@ -11,8 +11,8 @@ const name = "name"
 
 func toDBFormat(slot *domain.Slot) map[string]interface{} {
 	return map[string]interface{}{
-		ID: slot.ID(),
-		name: slot.Name(),
+		ID:    slot.ID(),
+		name:  slot.Name(),
 		owner: slot.CurrentOwner(),
 	}
 }

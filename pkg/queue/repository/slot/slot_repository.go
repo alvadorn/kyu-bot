@@ -55,5 +55,3 @@ func keyGeneralSlot(slackId, channelId string) string {
 func keySlot(slackId, channelId string, slot *domain.Slot) string {
 	return slackId + ":" + channelId + ":slot:" + slot.ID()
 }
-
-
