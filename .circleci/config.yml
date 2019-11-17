@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  codecov: codecov/codecov@1.0.2
 jobs:
   build:
     docker:
@@ -10,4 +12,6 @@ jobs:
       - checkout
       # specify any bash command here prefixed with `run: `
       - run: go mod vendor
-      - run: go test -v ./...
+      - run: go test -race -coverprofile=coverage.txt -covermode=atomic ./...
+      - codecov/upload:
+        file: coverage.txt
