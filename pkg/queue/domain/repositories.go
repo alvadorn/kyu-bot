@@ -1,10 +1,5 @@
 package domain
 
-type SlottedQueueRepository interface {
-	recoverSlottedQueueInfo(slackId string, chatId string) (*SlottedQueue, error)
-	saveSlottedQueue(slackId string, chatId string)
-}
-
 type QueueRepository interface {
 	SaveQueue(slackId string, channelId string, queue *Queue)
 	RestoreQueue(slackId string, channelId string) *Queue
